@@ -34,7 +34,7 @@ import urllib
 import deserialize
 from processor import Processor, print_log
 from storage import Storage
-from utils import logger, hash_decode, hash_encode, Hash, header_from_string, header_to_string, ProfiledThread, \
+from utils import logger, hash_decode, hash_encode, Hash9, Hash, header_from_string, header_to_string, ProfiledThread, \
     rev_hex, int_to_hex4
 
 class BlockchainProcessor(Processor):
@@ -432,7 +432,7 @@ class BlockchainProcessor(Processor):
                 undo = undo_info.pop(txid)
                 self.storage.revert_transaction(txid, tx, block_height, touched_addr, undo)
 
-        if revert: 
+        if revert:
             assert undo_info == {}
 
         # add undo info
@@ -446,7 +446,7 @@ class BlockchainProcessor(Processor):
             self.invalidate_cache(addr)
 
         self.storage.update_hashes()
-        # batch write modified nodes 
+        # batch write modified nodes
         self.storage.batch_write()
         # return length for monitoring
         return len(tx_hashes)
@@ -459,7 +459,7 @@ class BlockchainProcessor(Processor):
             result = self.process(request, cache_only=True)
         except BaseException as e:
             self.push_response(session, {'id': message_id, 'error': str(e)})
-            return 
+            return
 
         if result == -1:
             self.queue.put((session, request))
@@ -509,7 +509,7 @@ class BlockchainProcessor(Processor):
 
 
     def process(self, request, cache_only=False):
-        
+
         message_id = request['id']
         method = request['method']
         params = request.get('params', ())
@@ -711,7 +711,7 @@ class BlockchainProcessor(Processor):
         self.header = self.block2header(self.bitcoind('getblock', (self.storage.last_hash,)))
         self.header['utxo_root'] = self.storage.get_root_hash().encode('hex')
 
-        if self.shared.stopped(): 
+        if self.shared.stopped():
             print_log( "closing database" )
             self.storage.close()
 
@@ -828,7 +828,7 @@ class BlockchainProcessor(Processor):
             # TODO: update cache here. if new value equals cached value, do not send notification
             self.address_queue.put((address,sessions))
 
-    
+
     def close(self):
         self.blockchain_thread.join()
         print_log("Closing database...")
@@ -876,5 +876,3 @@ class BlockchainProcessor(Processor):
                         'method': 'blockchain.address.subscribe',
                         'params': (addr, status),
                         })
-
-

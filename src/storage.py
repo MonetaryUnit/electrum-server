@@ -29,7 +29,7 @@ import sys
 import threading
 
 from processor import print_log, logger
-from utils import bc_address_to_hash_160, hash_160_to_pubkey_address, Hash, \
+from utils import bc_address_to_hash_160, hash_160_to_pubkey_address, Hash9, Hash, \
     bytes8_to_int, bytes4_to_int, int_to_bytes8, \
     int_to_hex8, int_to_bytes4, int_to_hex4
 
@@ -41,7 +41,7 @@ Patricia tree for hashing unspents
 
 # increase this when database needs to be updated
 global GENESIS_HASH
-GENESIS_HASH = '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f'
+GENESIS_HASH = '0000070e6b650e7a6f20e015031b74c1f7e2b25ed4e419d8825ab9cc7eccfa92'
 DB_VERSION = 3
 KEYLENGTH = 56   # 20 + 32 + 4
 
